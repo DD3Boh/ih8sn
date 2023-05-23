@@ -87,8 +87,11 @@ int main(int argc, char *argv[]) {
     const auto manufacturer_name = config.find("MANUFACTURER_NAME");
     const auto product_brand = config.find("PRODUCT_BRAND");
     const auto product_device = config.find("PRODUCT_DEVICE");
+    const auto product_device_final = config.find("PRODUCT_DEVICE_FINAL");
     const auto product_model = config.find("PRODUCT_MODEL");
+    const auto product_model_final = config.find("PRODUCT_MODEL_FINAL");
     const auto product_name = config.find("PRODUCT_NAME");
+    const auto product_name_final = config.find("PRODUCT_NAME_FINAL");
 
     if (is_init_stage && build_fingerprint != config.end()) {
         property_override(property_list("ro.", "build.fingerprint"),
@@ -145,6 +148,18 @@ int main(int argc, char *argv[]) {
 
     if (is_init_stage && product_name != config.end()) {
         property_override(property_list("ro.product.", "name"), product_name->second.c_str());
+    }
+
+    if (is_boot_completed_stage && product_device_final != config.end()) {
+        property_override(property_list("ro.product.", "device"), product_device_final->second.c_str());
+    }
+
+    if (is_boot_completed_stage && product_model_final != config.end()) {
+        property_override(property_list("ro.product.", "model"), product_model_final->second.c_str());
+    }
+
+    if (is_boot_completed_stage && product_name_final != config.end()) {
+        property_override(property_list("ro.product.", "name"), product_name_final->second.c_str());
     }
 
     if (is_boot_completed_stage) {
