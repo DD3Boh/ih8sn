@@ -89,6 +89,18 @@ int main(int argc, char *argv[]) {
     const auto product_device = config.find("PRODUCT_DEVICE");
     const auto product_model = config.find("PRODUCT_MODEL");
     const auto product_name = config.find("PRODUCT_NAME");
+    const auto build_id = config.find("BUILD_ID");
+    const auto build_version_incremental = config.find("BUILD_VERSION_INCREMENTAL");
+
+    if (is_init_stage && build_id != config.end()) {
+        property_override(property_list("ro.", "build.id"),
+                build_id->second.c_str());
+    }
+
+    if (is_init_stage && build_version_incremental != config.end()) {
+        property_override(property_list("ro.", "build.version.incremental"),
+                build_version_incremental->second.c_str());
+    }
 
     if (is_init_stage && build_fingerprint != config.end()) {
         property_override(property_list("ro.", "build.fingerprint"),
