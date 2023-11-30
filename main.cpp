@@ -91,10 +91,28 @@ int main(int argc, char *argv[]) {
     const auto product_name = config.find("PRODUCT_NAME");
     const auto build_id = config.find("BUILD_ID");
     const auto build_version_incremental = config.find("BUILD_VERSION_INCREMENTAL");
+    const auto build_flavor = config.find("BUILD_FLAVOR");
+    const auto build_host = config.find("BUILD_HOST");
+    const auto build_user = config.find("BUILD_USER");
 
     if (is_init_stage && build_id != config.end()) {
         property_override(property_list("ro.", "build.id"),
                 build_id->second.c_str());
+    }
+
+    if (is_init_stage && build_flavor != config.end()) {
+        property_override(property_list("ro.", "build.flavor"),
+                build_flavor->second.c_str());
+    }
+
+    if (is_init_stage && build_host != config.end()) {
+        property_override(property_list("ro.", "build.host"),
+                build_host->second.c_str());
+    }
+
+    if (is_init_stage && build_user != config.end()) {
+        property_override(property_list("ro.", "build.user"),
+                build_user->second.c_str());
     }
 
     if (is_init_stage && build_version_incremental != config.end()) {
